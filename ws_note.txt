@@ -1,0 +1,7 @@
+Use Binomial probability Formula to calculate chances of number of k users transmit at the same time
+
+- For non-persistence connection, content-length is not necessary
+- For persistence, content-length is necessary -> Dest need to know total size of file to start assembling packets
+
+If the webpage is cached within the proxy server. If the web page is not modified at the time of request -> Web page will be returned.
+Otherwise, if web page is not cached or is modified -> request local DNS for web page
