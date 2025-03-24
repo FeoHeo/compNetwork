@@ -32,8 +32,18 @@ while True:
     # send a thank you message to the client. encoding to send byte type. 
     c.send('Thank you for connecting'.encode()) 
 
-    # Close the connection with the client 
-    c.close()
-
-    # Breaking once connection closed
+    while True:
+        temp = c.recv(100)
+        if(temp.decode() == "end"):
+            print("Ending program and cleaning up")
+            # Close the connection with the client 
+            c.close()
+            break 
+        else:
+            print("Received dat: " , temp.decode())
     break
+
+
+print("Program ended")
+
+

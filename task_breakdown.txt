@@ -1,0 +1,20 @@
+* A few tasks needed to finish a1
+- Able to send cached data to client (This might be working already
+    but not properly cause cache storing is unfinished)
+- Create proper request line for origin server
+    + Just some speculation but we could do
+    + originServerRequest = "GET / HTTP/1.1"
+    + originServerRequestHeader = "Host: http.badssl.com"
+
+- Code to receive response from origin server 
+    + Right now we could just do
+    + originResponse = originServerSocket.recv()
+    + Could print out response to ensure that it's correct
+- Direct request to client (terminal)
+    + connSocket.send() would do 
+    + Printout sent response for debugging
+- Note about send() and recv()
+    + Dunno how Python handles it but when coding in Java
+    I have to make a loop to process individual lines with send()
+    and recv() as far as I remember. So keep this in mind as you move
+    forward
