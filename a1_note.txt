@@ -6,6 +6,10 @@
 - bind(('', port)) - port is self-explanatory, '' is interchangeble to 0.0.0.0 which means the method will 
 bind to all network interfaces (you can mod it to listen to local only, custom ipv4 or custom ipv6)
 
+- socket.accept() will return 2 values (conn , addr) sequentially. conn refer to the socket object that 
+can be use to call send() and recv(). Whereas addr contains the info about the conenction accepted. 'addr'
+is just a tuple(tuple is kinda linke python's version of C struct) that contains typle<"client_ip_adrr_string" , client_port_num_int>
+ip_addr of client is saved under a string type (probably of ipv6 addr being too long for int and we also need '.' characters)
 
 * From example github forward proxy:
 - at start() (it's like the main() of the program) -> start a new thread that executes conn_string to parse down info needed to start proxy 
