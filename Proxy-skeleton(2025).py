@@ -31,6 +31,7 @@ except:
 try:
   # Bind the the server socket to a host and port
   # ~~~~ INSERT CODE ~~~~
+  serverSocket.bind(('',proxyPort)) # '' to connect to all interfaces
   # ~~~~ END CODE INSERT ~~~~
   print ('Port is bound')
 except:
@@ -40,6 +41,10 @@ except:
 try:
   # Listen on the server socket
   # ~~~~ INSERT CODE ~~~~
+  
+  # Though most OS will treat listen(0) to accept 1 conn, I just wanna make sure 
+  serverSocket.listen(1) 
+
   # ~~~~ END CODE INSERT ~~~~
   print ('Listening to socket')
 except:
