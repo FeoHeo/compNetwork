@@ -18,3 +18,16 @@
     I have to make a loop to process individual lines with send()
     and recv() as far as I remember. So keep this in mind as you move
     forward
+
+-> Left this here to keep track of things for any possible tasks
+that is unfinished 
+
+== NEW ORDER FROM THE MINISTRY OF TRUTH ==
+* Remaining tasks
+    - Load from cache is failing not storing cache 
+        + Could be quite the quick fix 
+        + Was not a quick fix at all, dunno why but part of the code 
+        that is responsible for loading the cache is not executing
+        + The behavior is kinda weird, the "Test send" message actually
+        works meaning that send() from the part that load cache works but
+        the response is quickly overwritten by the main response

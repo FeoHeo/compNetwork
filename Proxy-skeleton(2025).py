@@ -118,12 +118,16 @@ while True:
     cacheFile = open(cacheLocation, "r")
     cacheData = cacheFile.readlines()
 
+    print("Getting cache data")
+    print(cacheData)
     print ('Cache hit! Loading from cache file: ' + cacheLocation)
     # ProxyServer finds a cache hit
     # Send back response to client 
     # ~~~~ INSERT CODE ~~~~
-    clientSocket.send(cacheData)
+    clientSocket.send("Test send".encode('utf-8'))
+    clientSocket.send(cacheData[0].encode('utf-8'))
     # ~~~~ END CODE INSERT ~~~~
+    print("Successfully sent to client")
     cacheFile.close()
     print ('Sent to the client:')
     print ('> ' + cacheData)
