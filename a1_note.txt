@@ -16,3 +16,9 @@ ip_addr of client is saved under a string type (probably of ipv6 addr being too 
 * From example github forward proxy:
 - at start() (it's like the main() of the program) -> start a new thread that executes conn_string to parse down info needed to start proxy 
 -> conn_string calls proxy_server that will start on designated webserver and port. 
+
+
+- Dunno why but resolved cache data sending. In the end, the error was from the print() statement. Use ' ''.join(cacheData) ' to transform
+encoded cacheData data back to string. Because you'll need to do cacheData.encode() for send() to work. 
+    + Also have to transformed it back to 'string' cause cacheFile does not return a 'string' type but a list so taht might be the reason
+    why the behavior is off

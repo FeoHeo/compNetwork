@@ -119,18 +119,20 @@ while True:
     cacheData = cacheFile.readlines()
 
     print("Getting cache data")
-    print(cacheData)
+    # print(cacheData)
     print ('Cache hit! Loading from cache file: ' + cacheLocation)
+    cacheData = ''.join(cacheData)
+    print("Type for cache: " + cacheData)
     # ProxyServer finds a cache hit
     # Send back response to client 
     # ~~~~ INSERT CODE ~~~~
     clientSocket.send("Test send".encode('utf-8'))
-    clientSocket.send(cacheData[0].encode('utf-8'))
+    clientSocket.send(cacheData.encode('utf-8'))
     # ~~~~ END CODE INSERT ~~~~
     print("Successfully sent to client")
     cacheFile.close()
     print ('Sent to the client:')
-    print ('> ' + cacheData)
+    print ('> ' + ''.join(cacheData))
   except:
     # cache miss.  Get resource from origin server
     originServerSocket = None
