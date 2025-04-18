@@ -1,0 +1,16 @@
+**Q2.2
+	- Connection override - results in extra latency
+	- Slow start inefficiency - small interval everytime a new connection is made
+** Q3:
+	- Instead of using 1 TCP connection then you could use 10. This would results in higher download rate -> You can use more bandwidth
+
+** Q4:
+	- https://gaia.cs.umass.edu/kurose_ross/interactive/rdt30.php <link consists of both sender can reciver for rdt3.0>
+
+** Q5:
+	- Go back N re-transmit packets within the entire window, but selective repeat only re-sends the packets that have not been received
+		+ if packet 3 have not been ACKed, packet 4,5 and 6 would not be ACKed so 4,5,6 will be re-transmit along with packet 3
+even if ACK for 4,5,6 has been received	
+
+	- For the packet timer, you could use the 'oldest on ACKed packet'
+		+ If the timer were to restart, then we only need to keep track of the oldest ACKed packet within the transmission window

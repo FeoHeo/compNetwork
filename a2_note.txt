@@ -1,0 +1,11 @@
+[Note]
+	- Checkout the first lecture of week 5 as it has information on how to do the second assignment
+	- For TCP if you get ACK-5 then any packet before will also get ACK. Even if ACK-4 and ACK-3 is
+not yet received
+	- If the ACK flag is set to 1 then the packet is an acknoledgement
+	- The Seq number of client will increase overtime and ACK number of server will increase overtime
+		+ The reason why Seq number in the example incease by 1 becasue a char is 1 byte in data 
+therefore, Seq increase by 1 everytime it is sent
+
+	- The presented packet headers in a TCP packet will then further be pushed down to IP layer to
+put a few extra headers on there to help packet reach destination 
