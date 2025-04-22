@@ -1,0 +1,34 @@
+** Overview
+- Don't need to make an entire protocol. You only need to use the gbn as an example and the current emulator
+- Need to figure out the differences between Go-back-N and Selective Repeat then repurpose the code to Selective Repeat
+
+** Differences:
+- Window size: 
+    GBN -> senderWinSz = N ; receiverWinSz = 1 
+    SR -> senderWinSz = N ; receiverWinSz = N 
+
+- Receiver 
+    GBN: Discard out-of-order packets
+    SR: Accept and buffer out-of-order packets 
+
+- Retransmission: 
+    GBN: Retransmit from first lost frame
+    SR: Retransmit lost frame only 
+
+- Buffer requirement at receiver: 
+    GBN: low -> cause only need to buffer in order frames
+    SR: high -> Need buffer for out-of-order frames 
+
+- ACK 
+    GBN: Cumulative ACK -> This means that ACK 8 will also act as ACK for 5,6,7 even if the lower ACKs have yet to be received
+    SR: Individual ACK for each received frames 
+
+- Error handling:
+    GBN: Retransmit multiple frames on errors (or timeouts)
+    SR: Only retransmit error (or timeout) frames 
+
+- Window sliding:
+    GBN: Window moves forward when Cumulative ACK is received. So when ACK 8 is received, window will move forward despite not 
+    having ACK 7 
+    SR: Move forward per ACK -> This means that the window will stop sliding with frame 2 at the beginning of the window if ACK 2 
+    has yet to be received 
