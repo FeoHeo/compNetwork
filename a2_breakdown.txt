@@ -32,3 +32,77 @@
     having ACK 7 
     SR: Move forward per ACK -> This means that the window will stop sliding with frame 2 at the beginning of the window if ACK 2 
     has yet to be received 
+
+
+
+** TODO
+- Alter the receiver window size and receiver behaviour
+    + This includes the receiver behaviour for aboth receiving packets (B) and receiving ACK (A)
+- Current receiver (A) behavior:
+    + check corruption -> starts processing if not corrupted
+    + Check if there is any packets waiting for ACK using windowcount (counter for packets waiting to be ACK)
+        ~ If yes: Look inside buffer[] to see if the acknum of received ACK is winthin the seqnum window
+        (This accounts for wrap around)
+        ~ Cumulative ACK cause of GBN's nature. ACK 9 will ACK all that is lesser than 9
+        ~ Slide window forward by updating windowfirst only (windowfirst points to oldest unACK and window last point to newest unACK, windowlast stays
+        the same cause windowlast only move when packets are sent)
+        ~ Remove ACKed packets form buffer[]
+        ~ Restart timer if there are still unACK packets
+
+- Expected receiver (A) behaviour  
+    + Corruption check is the same
+    + Check unACKed packets waiting for ACK 
+        ~ If yes, compare within the unACK window 
+        ~ Buffer any incoming ACK that is within the window 
+        ~ If the incoming ACK is out of order then buffer the ACK -> Using the buffer[]
+        ~ Remove ACKed from unACK window
+        ~ Slide window by 1 + out_of_order_buffer.size() 
+        ~ Restart timer
+    -> It's individual ACK for each packets so you only need to find and ACK the ones inside 
+    buffer[] and you're good to move on. Remember to only move the window when the window beginning 
+    is already ACKed 
+    -> However, for B side, then you'll need another to keep track of out-of-order data packets 
+
+
+- Current B_input() behavior:
+    + Check corruption
+    + Deliver to upper layer 
+    + Send ACK according to received seqnum 
+    + Move expectedseqnum to the next expecting packet (increment expectedseqnum by 1)
+    + Fill payload with data (the data is random and unimportant)
+    + Fill out checksum section of the packet 
+    + Send packet
+
+- Expected B_input() behavior:
+    + Check corruption
+    + Check if packet is within receiving window 
+
+>>
+
+if (!isCorrupted(packet) && isWithinExpectedWindow(packet.seqnum)) {
+
+    // Only store if not already received
+    if (!received[packet.seqnum]) {
+        buffer[packet.seqnum] = packet;
+        received[packet.seqnum] = true;
+    }
+
+    // Try to deliver in-order packets starting from expectedseqnum
+    while (received[expectedseqnum]) {  // Check beginning of array for any received packets but not yet delivered to upper layer
+        tolayer5(B, buffer[expectedseqnum].payload);
+        received[expectedseqnum] = false;
+
+        // Move up expectedseqnum by one in circular fashion in the array
+        expectedseqnum = (expectedseqnum + 1) % SEQSPACE;
+    }
+
+    // Always ACK the received packet
+    sendACK(packet.seqnum);
+}
+else {
+    // If corrupted or not in window, do nothing or optionally send NAK
+}
+
+
+
+<<

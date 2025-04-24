@@ -9,3 +9,12 @@ therefore, Seq increase by 1 everytime it is sent
 
 	- The presented packet headers in a TCP packet will then further be pushed down to IP layer to
 put a few extra headers on there to help packet reach destination 
+
+
+** Current issues:
+
+* A_input()
+
+- Right now it is not removing the needed amount of packets or count from windowcount 
+	+ This leads to dupplications getting passed in resolving ACKs
+-> Resolved: You did '== NOTINUSE' when checking for unused packets instead of '!= NOTINUSE'
