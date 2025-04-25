@@ -212,13 +212,24 @@ void A_init(void)
 
 static int expectedseqnum; /* the sequence number expected next by the receiver */
 static int B_nextseqnum;   /* the sequence number for the next packets sent by B */
+/* Make an array the size of SEQSPACE to check to received elements
+use round number to ensure that we will not mistake element of new round
+to old one */
+static int ACKed[SEQSPACE];
+
+/*Buffer to store the received out-of-order packets*/
+static int B_buffer[WINDOWSIZE];
+static int roundNum;
+
 
 
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
   struct pkt sendpkt;
+  struct pkt deliverpkt;
   int i;
+
 
   /* if not corrupted and received packet is in order */
   if  ( (!IsCorrupted(packet))  && (packet.seqnum == expectedseqnum) ) {
@@ -226,9 +237,20 @@ void B_input(struct pkt packet)
       printf("----B: packet %d is correctly received, send ACK!\n",packet.seqnum);
     packets_received++;
 
-    /* deliver to receiving application */
+    /*Log change to ACKed array and roundNum*/
+    ACKed[packet.seqnum]++;
+    roundNum++;
+
+    /* Deliver the packet*/
     tolayer5(B, packet.payload);
 
+    /* Increment the next expected seqnum */
+    expectedseqnum++;
+
+    /*Deliver the rest of the buffer if any is left*/
+    while(ACKed[expectedseqnum] == roundNum) {
+      tolayer5(B, buffer[i].payload);
+    }
     /* send an ACK for the received packet */
     sendpkt.acknum = expectedseqnum;
 
@@ -245,6 +267,8 @@ void B_input(struct pkt packet)
       sendpkt.acknum = expectedseqnum - 1;
   }
 
+  
+  /*Will get back to these parts later if there's an issue*/
   /* create packet */
   sendpkt.seqnum = B_nextseqnum;
   B_nextseqnum = (B_nextseqnum + 1) % 2;
@@ -266,6 +290,13 @@ void B_init(void)
 {
   expectedseqnum = 0;
   B_nextseqnum = 1;
+  roundNum = 0;
+
+  /*Fill ACKed with 0 to start round*/
+  int i;
+  for(i=0 ; i<SEQSPACE ; i++) {
+    ACKed[i] = 0;
+  }
 }
 
 /******************************************************************************

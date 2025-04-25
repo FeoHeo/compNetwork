@@ -77,6 +77,7 @@
     + Check corruption
     + Check if packet is within receiving window 
 
+    + Pseudo code for expected behavior
 >>
 
 if (!isCorrupted(packet) && isWithinExpectedWindow(packet.seqnum)) {
@@ -102,7 +103,11 @@ if (!isCorrupted(packet) && isWithinExpectedWindow(packet.seqnum)) {
 else {
     // If corrupted or not in window, do nothing or optionally send NAK
 }
-
-
-
 <<
+
+//
+So expectedseqnum indicates the beginning of the window because GBN also
+used the variable as a way to check for expecting packets. The only thing
+that I need to be aware of is to make sure that the var can do wrap around 
+
+//
