@@ -139,7 +139,7 @@ void A_input(struct pkt packet)
           int seqlast = buffer[windowlast].seqnum;
           /* check case when seqnum has and hasn't wrapped */
           if (((seqfirst <= seqlast) && (packet.acknum >= seqfirst && packet.acknum <= seqlast)) ||
-              ((seqfirst > seqlast) && (packet.acknum >= seqfirst || packet.acknum <= seqlast))) {  /* Check within ACKed window. This takes into account that the window go around */
+              ((seqfirst > seqlast) && (packet.acknum >= seqfirst && packet.acknum <= seqlast))) {  /* Check within ACKed window. This takes into account that the window go around */
 
             /* packet is a new ACK */
             if (TRACE > 0)
@@ -221,16 +221,32 @@ static int ACKed[SEQSPACE];
 static int B_buffer[WINDOWSIZE];
 static int roundNum;
 
-
+/*Used to check if the input num is within the boundaries. 
+Seperated to a function for better readability*/
+bool windCheck(int inputSeqNum , int windBegin , int windEnd);
 
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
 {
   struct pkt sendpkt;
-  struct pkt deliverpkt;
   int i;
+  int winEndNum;
 
+  if(expectedseqnum == 0) {
+    roundNum++;
+  }
 
+  /* DO nothing and return if packet is duplicate*/
+  if(ACKed[packet.seqnum] != roundNum) {
+    if(TRACE > 0) {
+      printf("----B: packet %d is dupplicate or unexpected packet number, do nothing" , packet.seqnum);
+    }
+    return;
+  }
+
+  /*Mark end of buffer position*/
+  winEndNum = (expectedseqnum + WINDOWSIZE) % SEQSPACE;
+  
   /* if not corrupted and received packet is in order */
   if  ( (!IsCorrupted(packet))  && (packet.seqnum == expectedseqnum) ) {
     if (TRACE > 0)
@@ -239,23 +255,42 @@ void B_input(struct pkt packet)
 
     /*Log change to ACKed array and roundNum*/
     ACKed[packet.seqnum]++;
-    roundNum++;
 
     /* Deliver the packet*/
     tolayer5(B, packet.payload);
 
     /* Increment the next expected seqnum */
-    expectedseqnum++;
+    expectedseqnum = (expectedseqnum + 1) % WINDOWSIZE;
 
     /*Deliver the rest of the buffer if any is left*/
+    i = packet.seqnum;
     while(ACKed[expectedseqnum] == roundNum) {
       tolayer5(B, buffer[i].payload);
+      i++;
     }
     /* send an ACK for the received packet */
-    sendpkt.acknum = expectedseqnum;
+    sendpkt.acknum = packet.seqnum;
 
     /* update state variables */
-    expectedseqnum = (expectedseqnum + 1) % SEQSPACE;        
+    expectedseqnum = (expectedseqnum + 1) % SEQSPACE; 
+
+    /*Process packets that come in out of order and in window*/
+  } else if((!IsCorrupted(packet)) && (windCheck(packet.seqnum , expectedseqnum , winEndNum))) {
+
+    if(TRACE > 0) {
+      printf("----B: packet %d is received as out of order in receiving window, buffering packet" , packet.seqnum);
+    }
+    packets_received++;
+
+    /*log the change to buffer*/
+    ACKed[packet.seqnum]++;
+
+    /*Buffer packets to window*/
+    /*Check a2_breakdown.txt the B_buffer part (line 126) for breakdown*/
+    B_buffer;
+
+    /*Send ACK*/
+    sendpkt.acknum = packet.seqnum;
   }
   else {
     /* packet is corrupted or out of order resend last ACK */
@@ -288,12 +323,13 @@ void B_input(struct pkt packet)
 /* entity B routines are called. You can use it to do any initialization */
 void B_init(void)
 {
+  int i;
+
   expectedseqnum = 0;
   B_nextseqnum = 1;
   roundNum = 0;
 
   /*Fill ACKed with 0 to start round*/
-  int i;
   for(i=0 ; i<SEQSPACE ; i++) {
     ACKed[i] = 0;
   }
@@ -311,5 +347,21 @@ void B_output(struct msg message)
 /* called when B's timer goes off */
 void B_timerinterrupt(void)
 {
+}
+
+/*The extra functions needed to implement code*/
+bool windCheck(int inputSeqNum , int windBegin , int windEnd) {
+  if(windBegin <= windEnd) {
+    if(inputSeqNum <= windEnd && inputSeqNum >= windBegin) {
+      return true;
+    }
+
+  } else if(windBegin > windEnd) {
+    if(inputSeqNum >= windEnd && inputSeqNum <= windBegin) {
+      return true;
+    }
+  }
+
+  return false;
 }
 

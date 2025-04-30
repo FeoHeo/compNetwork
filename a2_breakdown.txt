@@ -110,4 +110,27 @@ So expectedseqnum indicates the beginning of the window because GBN also
 used the variable as a way to check for expecting packets. The only thing
 that I need to be aware of is to make sure that the var can do wrap around 
 
+
 //
+
+- Only need to resolve the receiving window and receiving out of order packets 
+    + Have a certain amount of N that corresponds to the window size that could
+    wraps around
+    + Then compare the number in case of duplicates
+    + Could attempt to increment roundNum everytime 0 is the expected number
+    + Will need a variable or pointer that keeps track of the seqlast (the ending
+    position of window)
+
+
+* B_buffer 
+    - So we could possibly utilise ACKed array to get the number needed
+        + If not then we will have to manually sort the numbers and cant always push 
+        to an empty slot 
+    - Everytime ACKed[i] is pushed
+        + Look for the ACKed[i].seqnum in B_buffer[] array, use a typical for loop to do this 
+        + Pop that element and send it to layer 5 
+    - Remaining issue: 
+        + This might make require some extra implementation to manage empty spaces inside B_buffer
+        + For example, could possibly initialise all elements of B_buffer, packet.seq = NOTINUSE
+        + Use a for loop to go through array, if (B_buffer[i] == NOTINUSE) then push it there
+        + Everytime we pop then set B_buffer[i].seqnum = NOTINUSE
