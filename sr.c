@@ -218,7 +218,7 @@ to old one */
 static int ACKed[SEQSPACE];
 
 /*Buffer to store the received out-of-order packets*/
-static int B_buffer[WINDOWSIZE];
+static struct pkt B_buffer[WINDOWSIZE];
 static int roundNum;
 
 /*Used to check if the input num is within the boundaries. 
@@ -230,6 +230,7 @@ void B_input(struct pkt packet)
 {
   struct pkt sendpkt;
   int i;
+  int j;
   int winEndNum;
 
   if(expectedseqnum == 0) {
@@ -237,12 +238,12 @@ void B_input(struct pkt packet)
   }
 
   /* DO nothing and return if packet is duplicate*/
-  if(ACKed[packet.seqnum] != roundNum) {
+  /*if(ACKed[packet.seqnum] != roundNum) {
     if(TRACE > 0) {
-      printf("----B: packet %d is dupplicate or unexpected packet number, do nothing" , packet.seqnum);
+      printf("----B: packet %d - %d is dupplicate or unexpected packet number for round %d, do nothing\n" , packet.seqnum , ACKed[packet.seqnum] , roundNum);
     }
     return;
-  }
+  }*/
 
   /*Mark end of buffer position*/
   winEndNum = (expectedseqnum + WINDOWSIZE) % SEQSPACE;
@@ -257,15 +258,21 @@ void B_input(struct pkt packet)
     ACKed[packet.seqnum]++;
 
     /* Deliver the packet*/
+    printf("----B: packet %d delivering\n" , packet.seqnum);
     tolayer5(B, packet.payload);
 
-    /* Increment the next expected seqnum */
-    expectedseqnum = (expectedseqnum + 1) % WINDOWSIZE;
 
     /*Deliver the rest of the buffer if any is left*/
     i = packet.seqnum;
-    while(ACKed[expectedseqnum] == roundNum) {
-      tolayer5(B, buffer[i].payload);
+    while(ACKed[i] == roundNum) {
+      for(j=0 ; j<WINDOWSIZE ; j++) {
+        if(B_buffer[j].seqnum == i) {
+          printf("----B: packet %d delivering\n" , B_buffer[j].seqnum);
+          tolayer5(B , B_buffer[j].payload);
+          B_buffer[j].seqnum = NOTINUSE;
+          break;
+        }
+      }
       i++;
     }
     /* send an ACK for the received packet */
@@ -274,11 +281,11 @@ void B_input(struct pkt packet)
     /* update state variables */
     expectedseqnum = (expectedseqnum + 1) % SEQSPACE; 
 
-    /*Process packets that come in out of order and in window*/
+    /*Process out of order packets that are within the window*/
   } else if((!IsCorrupted(packet)) && (windCheck(packet.seqnum , expectedseqnum , winEndNum))) {
 
     if(TRACE > 0) {
-      printf("----B: packet %d is received as out of order in receiving window, buffering packet" , packet.seqnum);
+      printf("----B: packet %d is received as out of order in receiving window, buffering packet\n" , packet.seqnum);
     }
     packets_received++;
 
@@ -287,7 +294,13 @@ void B_input(struct pkt packet)
 
     /*Buffer packets to window*/
     /*Check a2_breakdown.txt the B_buffer part (line 126) for breakdown*/
-    B_buffer;
+    for(i=0 ; i<WINDOWSIZE ; i++) {
+      if(B_buffer[i].seqnum == NOTINUSE) {
+        printf("----B: Buffering packet %d\n" , packet.seqnum);
+        B_buffer[i] = packet;
+        break;
+      }
+    }
 
     /*Send ACK*/
     sendpkt.acknum = packet.seqnum;
@@ -327,11 +340,16 @@ void B_init(void)
 
   expectedseqnum = 0;
   B_nextseqnum = 1;
-  roundNum = 0;
+  roundNum = -1;
 
   /*Fill ACKed with 0 to start round*/
   for(i=0 ; i<SEQSPACE ; i++) {
     ACKed[i] = 0;
+  }
+
+  /*Fill B_buffer with NOTINUSE*/
+  for(i=0 ; i<WINDOWSIZE ; i++) {
+    B_buffer[i].seqnum = NOTINUSE;
   }
 }
 
