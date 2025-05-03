@@ -258,7 +258,7 @@ void B_input(struct pkt packet)
     ACKed[packet.seqnum]++;
 
     /* Deliver the packet*/
-    printf("----B: packet %d delivering\n" , packet.seqnum);
+    /*printf("----B: packet %d delivering\n" , packet.seqnum);*/
     tolayer5(B, packet.payload);
 
 
@@ -267,7 +267,7 @@ void B_input(struct pkt packet)
     while(ACKed[i] == roundNum) {
       for(j=0 ; j<WINDOWSIZE ; j++) {
         if(B_buffer[j].seqnum == i) {
-          printf("----B: packet %d delivering\n" , B_buffer[j].seqnum);
+          /*printf("----B: packet %d delivering\n" , B_buffer[j].seqnum);*/
           tolayer5(B , B_buffer[j].payload);
           B_buffer[j].seqnum = NOTINUSE;
           break;
