@@ -1,0 +1,32 @@
+** Processing I/O
+
+For the input its quite straight forward:
+
+[THERE ARE NO NEGATIVE INPUTS - ANY NEGATIVE CONNECTIONS ARE TO BE REMOVED]
+
+- First user will input amount of routers and name for each router:'$ X\n Y\n Z\n' this means there are 3 router each named X,Y,Z
+- User will then input 'START' and input the distance for each connection: 'X Y 9' means distance from X to Y is 9
+- If 'UPDATE' is inputted then user can update the distance: 'X Y 3' means X to Y is now 3
+	+ If user inputted: 'X Y -1' then terminate X to Y connection (set it to either unreachable or infinity)
+- When user input 'END', starts the calculation and print out output link table on every interation of t
+
+** Distance Vector algo
+
+Asked question: Under such topology [A]-[B]-[C]-[D]-[E], how could D knows to hop to C in order to reach A
+	- Answer: D will know when C shares its own link table
+		+ B knows pathway to A -> share with C
+		+ C knows path to A via B -> share with D
+		+ D knows path to A via C. 
+		+ Sharing process will continues when there is no more update to link table (this would count for
+		each individual link)
+
+Ask: How do you know which is connected to which (the neighboring nodes) from an input file
+	- Answer: This will be specified in the after 'START' keyword
+		+ if there is input 'X Y 1\n X Z 1\n Y Z 1\n' then X,Y,Z will all be connected like a triangle
+		+ But if 'X Y 1\n Y Z 1\n' then X,Y,Z will be [X]-[Y]-[Z]
+
+=> NOTE: Also you don't need to account for any bad outage during execution yet. This means that you don't need to implement
+frequent neighbor update to check for any node that is not responding, we will asusme that all nodes will know when there
+is an outage
+
+=== THINK THAT'S IT, HAPPY SUFFERING :D === 
