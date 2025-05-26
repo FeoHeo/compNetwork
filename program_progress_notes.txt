@@ -1,0 +1,17 @@
+** Progress log
+- Figuring out what to include inside DistanceVector() func
+because the program will be expected to include DV implementation
+there
+    + Since it will print out table of each implementation, we could
+    do output inside each function.
+    + Easiest thing could do with params: put user input there.
+    + Could do something like 
+    DistanceVector(<action> , [input1 , input2 , distance]);
+    for now. Could change it later when needed
+    + Could attempt to implement the table inside the function as well
+
+- But how about each node, what type would each of them be?
+    + Each node will need to contain: link_table, node_name
+    + Iteration will manage by the function to ensure all node sync
+    + Each table will be a matrix that contains: [col1]->destination;
+    [col2] -> neighbor_to _destination; [col3]->distance_to_destination
