@@ -9,24 +9,25 @@ void DistanceVector();
 
 int main(int agrc , char **argv) {
 
-    char router_name_input[16];
+    char user_input[16];
     struct router router_list[8];
 
+    // 
     do {
         printf("Enter router name: ");
-        fgets(router_name_input , 16 , stdin);
+        fgets(user_input , 16 , stdin);
 
         /*Remove \n char from string*/
-        router_name_input[strcspn(router_name_input , "\n")] = 0;
+        user_input[strcspn(user_input , "\n")] = 0;
 
         
         int i;
         for(i=0 ; i<8 ; i++) {
-            if(strcmp(router_name_input,"END") /* Check for null or empty string*/
+            if(strcmp(user_input,"END") /* Check for null or empty string*/
             && (router_list[i].router_name == NULL || *router_list[i].router_name == '\0')) {
                 
                 /*If found an empty spot, put router in there*/
-                strcpy(router_list[i].router_name , router_name_input);
+                strcpy(router_list[i].router_name , user_input);
 
                 /*Printing value of router_list[i] just to make sure*/
                 if(DEBUG) {
@@ -36,17 +37,35 @@ int main(int agrc , char **argv) {
             }
         }
 
-        // if(!strcmp(router_name_input,"testPrint")) {
-        //     for(i=0 ; i<8 ; i++) {
-        //         if(*router_list[i].router_name != '\0') {
-        //             printf("Name %d: %s\n" , i , router_list[i].router_name);
-        //         }
-        //     }
-        // }
+        /*if(!strcmp(user_input,"testPrint")) {
+            for(i=0 ; i<8 ; i++) {
+                if(*router_list[i].router_name != '\0') {
+                    printf("Name %d: %s\n" , i , router_list[i].router_name);
+                }
+            }
+        }*/
 
 
     /*Will change this to START later*/
-    } while (strcmp(router_name_input,"END"));
+    } while (strcmp(user_input,"START"));
+
+    /*Process inputs for links*/
+    do {
+        printf("Enter router links: \n");
+        fgets(user_input , 16 , stdin);
+        /*Remove \n char from string*/
+        user_input[strcspn(user_input , "\n")] = 0;
+        
+        char* tokenised;
+
+        /*Tokenise the inputs for processing*/
+        tokenised = strtok(user_input , " ");
+
+        if(DEBUG) {
+            printf("Atempt to add connection at: %s\n",tokenised);
+        };
+
+    } while(strcmp(user_input , "END"));
 
 
     return 0;

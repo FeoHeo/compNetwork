@@ -28,4 +28,5 @@ there
 ** Progression
 - Program has been made to receive user input and continually prompt if 
 the keyword "END" is not inputted. 
+- Now need to process inputs for link table
 
