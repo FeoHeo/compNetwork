@@ -1,4 +1,7 @@
-** Progress log
+** Theorizing
+- One good thing about this is that it seems to be really close to many
+previous project from prior courses where you just build some algo
+
 - Figuring out what to include inside DistanceVector() func
 because the program will be expected to include DV implementation
 there
@@ -9,9 +12,20 @@ there
     DistanceVector(<action> , [input1 , input2 , distance]);
     for now. Could change it later when needed
     + Could attempt to implement the table inside the function as well
+    + Could use main to take care of input but DV() should have debug mode
 
 - But how about each node, what type would each of them be?
     + Each node will need to contain: link_table, node_name
     + Iteration will manage by the function to ensure all node sync
     + Each table will be a matrix that contains: [col1]->destination;
     [col2] -> neighbor_to _destination; [col3]->distance_to_destination
+
+- Linking each router.
+    + Each router will be a struct that is a [router]
+    + Each [router] struct wil consists of: router_name , [link_table]
+    + Each [link_table] will consists of: destination , next_hop , distance_to_destination
+
+** Progression
+- Program has been made to receive user input and continually prompt if 
+the keyword "END" is not inputted. 
+
