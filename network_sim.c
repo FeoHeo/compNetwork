@@ -10,7 +10,7 @@ int DEBUG = 1;
 void DistanceVector();
 
 /*Returns the first index where an empty element is detected in the provided linkTable[]*/
-int findEmptyLink(struct link *table_input , int table_size);
+int findEmptyLink(struct link *table_input);
 
 int main(int agrc , char **argv) {
 
@@ -67,12 +67,12 @@ int main(int agrc , char **argv) {
         /*Tokenise the inputs for processing*/
         tokenised = strtok(user_input , " ");
 
-        for(i=0 ; i<8 ; i++) {
+        for(i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
             if(!strcmp(router_list[i].router_name , tokenised));
                 {
-                    /*int empty_index = findEmptyLink(&router_list[i].link_table , DEFAULT_TABLE_SIZE);*/
+                    int empty_index = findEmptyLink(router_list[i].link_table);
 
-                    int empty_index = 0;
+                    /* int empty_index = 0; using this for testing, remove later*/
                     
                     tokenised = strtok(NULL , " ");
                     strcpy(router_list[i].link_table[empty_index].destination , tokenised);
@@ -86,7 +86,7 @@ int main(int agrc , char **argv) {
         }
 
         if(DEBUG) {
-            printf("Info: \nRouter: %s\nLink %s - %d\n" , router_list[0].router_name , router_list[0].link_table[0].destination , router_list[0].link_table[0].distance_to_dest);
+            printf("Info: \nRouter: %s\nLink %s - %d\n  " , router_list[0].router_name , router_list[0].link_table[0].destination , router_list[0].link_table[0].distance_to_dest);
         }
 
     } while(strcmp(user_input , "END"));
@@ -94,3 +94,17 @@ int main(int agrc , char **argv) {
 
     return 0;
 }
+
+
+
+int findEmptyLink(struct link *table_input) {
+    int i;
+    for(i=0 ; i<DEFAULT_TABLE_SIZE ; i++) {
+        if(*table_input[i].destination == '\0') {
+            return i;
+        }
+    }
+
+    printf("From findEmptyLink(): No empty indexes found\n");
+    return -1;
+};
