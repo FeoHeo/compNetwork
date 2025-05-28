@@ -5,17 +5,22 @@
 
 int DEBUG = 1;
 
+#define DEFAULT_NETWORK_SIZE 8
+
 void DistanceVector();
+
+/*Returns the first index where an empty element is detected in the provided linkTable[]*/
+int findEmptyLink(struct link *table_input , int table_size);
 
 int main(int agrc , char **argv) {
 
-    char user_input[16];
-    struct router router_list[8];
+    char user_input[DEFAULT_STR_SIZE];
+    struct router router_list[DEFAULT_NETWORK_SIZE];
 
     // 
     do {
         printf("Enter router name: ");
-        fgets(user_input , 16 , stdin);
+        fgets(user_input , DEFAULT_STR_SIZE , stdin);
 
         /*Remove \n char from string*/
         user_input[strcspn(user_input , "\n")] = 0;
@@ -51,8 +56,9 @@ int main(int agrc , char **argv) {
 
     /*Process inputs for links*/
     do {
+        int i;
         printf("Enter router links: \n");
-        fgets(user_input , 16 , stdin);
+        fgets(user_input , DEFAULT_STR_SIZE , stdin);
         /*Remove \n char from string*/
         user_input[strcspn(user_input , "\n")] = 0;
         
@@ -61,9 +67,27 @@ int main(int agrc , char **argv) {
         /*Tokenise the inputs for processing*/
         tokenised = strtok(user_input , " ");
 
+        for(i=0 ; i<8 ; i++) {
+            if(!strcmp(router_list[i].router_name , tokenised));
+                {
+                    /*int empty_index = findEmptyLink(&router_list[i].link_table , DEFAULT_TABLE_SIZE);*/
+
+                    int empty_index = 0;
+                    
+                    tokenised = strtok(NULL , " ");
+                    strcpy(router_list[i].link_table[empty_index].destination , tokenised);
+                    strcpy(router_list[i].link_table[empty_index].next_hop , tokenised);
+
+                    tokenised = strtok(NULL , " ");
+                    int to_int = *tokenised - '0';
+                    router_list[i].link_table[empty_index].distance_to_dest = to_int;
+                    break;
+                }
+        }
+
         if(DEBUG) {
-            printf("Atempt to add connection at: %s\n",tokenised);
-        };
+            printf("Info: \nRouter: %s\nLink %s - %d\n" , router_list[0].router_name , router_list[0].link_table[0].destination , router_list[0].link_table[0].distance_to_dest);
+        }
 
     } while(strcmp(user_input , "END"));
 

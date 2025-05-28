@@ -29,4 +29,8 @@ there
 - Program has been made to receive user input and continually prompt if 
 the keyword "END" is not inputted. 
 - Now need to process inputs for link table
+- The program can now process user input for router links and put them in the link_table[]
+for the corresponding router_list[] element
+    + However, will also need to finish the findEmptyLink() function to find the next empty
+    link in the link_table[]. Currently using index 0 to test and debug
 
