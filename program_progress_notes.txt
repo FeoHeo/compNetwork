@@ -34,3 +34,12 @@ for the corresponding router_list[] element
     + However, will also need to finish the findEmptyLink() function to find the next empty
     link in the link_table[]. Currently using index 0 to test and debug
 
+- Now need to do the distanceVector() function 
++ Program will go through all routers 
++ Look into the link_table
++ Then it will go to each of its own neighbor's link_table (if dest and next_hop is the same string)
++ Compare the both link_tables (except for links where it is self->self) or distance is 0)
++ Then update accordingly
++ Then go through the whole thing again if there is an update
+
+
