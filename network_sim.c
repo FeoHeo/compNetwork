@@ -18,6 +18,8 @@ int main(int agrc , char **argv) {
     struct router router_list[DEFAULT_NETWORK_SIZE];
     char input_list[DEFAULT_NETWORK_SIZE][DEFAULT_STR_SIZE];
 
+    memset(router_list, 0, sizeof(router_list));
+
     // 
     do {
         printf("Enter router name: ");
@@ -27,8 +29,7 @@ int main(int agrc , char **argv) {
         user_input[strcspn(user_input , "\n")] = 0;
 
         
-        int i;
-        for(i=0 ; i<8 ; i++) {
+        for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
             if(strcmp(user_input,"START") /* Check for null or empty string*/
             && (router_list[i].router_name == NULL || *router_list[i].router_name == '\0')) {
                 
@@ -53,7 +54,7 @@ int main(int agrc , char **argv) {
 for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
     for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
         /*If found 2 different router then set cost to inf*/
-        if(!strcmp(router_list[i].router_name , router_list[j].router_name)) {
+        if(strcmp(router_list[i].router_name , router_list[j].router_name)) {
             strcpy(router_list[i].link_table[j].destination , router_list[j].router_name);
             router_list[i].link_table[j].distance_to_dest = -1;       
 
@@ -70,10 +71,16 @@ for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
 /*Printing the link table of each router*/
 
 for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+    if(!strcmp(router_list[i].router_name , "")) {
+        break;
+    }
     printf("Router %s link table\n" , router_list[i].router_name);
     printf("\n");
 
     for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
+        if(!strcmp(router_list[i].link_table[j].destination , "")) {
+            continue;
+        }
         printf("dest: %s\t hop: %s\t cost: %d\n" , 
         router_list[i].link_table[j].destination , router_list[i].link_table[j].next_hop , 
         router_list[i].link_table[j].distance_to_dest);
@@ -93,33 +100,54 @@ do {
     if(user_input == "END") {
         break;
     };
+
+    if(user_input == "UPDATE") {
+        continue;
+    };
     
     char* tokenised;
     
     /*Tokenise the inputs for processing*/
     tokenised = strtok(user_input , " ");
     
-    if(!strcmp(user_input,"testPrint")) {
-        for(i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
-            if(strcmp(router_list[i].router_name , "")) {
-                printf("Name %d: %s\n" , i , router_list[i].router_name);
+    if(!strcmp(user_input,"PRINT")) {
+        for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+            if(!strcmp(router_list[i].router_name , "")) {
+                break;
+            }
+            printf("Router %s link table\n" , router_list[i].router_name);
+            printf("\n");
+
+            for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
+                if(!strcmp(router_list[i].link_table[j].destination , "")) {
+                    continue;
+                }
+                printf("dest: %s\t hop: %s\t cost: %d\n" , 
+                router_list[i].link_table[j].destination , router_list[i].link_table[j].next_hop , 
+                router_list[i].link_table[j].distance_to_dest);
             }
         }
-        continue;
     }
     
     
-    /*Input the neighboring links*/
+    /*Find source input*/
     for(i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
         if(!strcmp(router_list[i].router_name , tokenised)) {
 
+            /*Find dest input*/
+            tokenised = strtok(NULL , " ");
+            for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
+                if(!strcmp(router_list[i].link_table[j].destination , tokenised)) {
+                    /*Update the cost and neighbor accordingly*/
+                    strcpy(router_list[i].link_table[j].next_hop , tokenised);
+                    tokenised = strtok(NULL , " ");
+                    router_list[i].link_table[j].distance_to_dest = (*tokenised)-'0';
+                }
+            }
 
         }
     }
     
-    if(DEBUG) {
-        printf("Info: \nRouter: %s\nLink %s - %d\n  " , router_list[0].router_name , router_list[0].link_table[0].destination , router_list[0].link_table[0].distance_to_dest);
-    }
     
 } while(strcmp(user_input , "END"));
 
