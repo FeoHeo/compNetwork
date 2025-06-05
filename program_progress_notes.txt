@@ -42,4 +42,6 @@ for the corresponding router_list[] element
 + Then update accordingly
 + Then go through the whole thing again if there is an update
 
-
+- Currently, need to input all the remaining dest to a router as inf even if they are not neighbors
++ Might need to keep an array of string to input in as other dest later
++ But if this is the case, then links won't be added after START but only updated
