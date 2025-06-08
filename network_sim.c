@@ -16,7 +16,7 @@ void printAll(struct router list_input[DEFAULT_NETWORK_SIZE]);
 
 // Returns the dest that need updating, caller need to calculate the value based on the value on the neighbor's table
 // If no value need to be updated then return blank ""
-char tableCompare(struct router router_1_input , struct router router_2_input);
+void tableCompare(struct router router_1_input , struct router router_2_input , char* buffer_input);
 
 // Find the name_input from router_input inside router_input and return the index to that in link_table
 int findLink(struct router router_input , char name_input[DEFAULT_STR_SIZE]);
@@ -146,6 +146,8 @@ do {
     
 } while(strcmp(user_input , "END"));
 
+    printAll(router_list);
+
     printf("Calculating Distance matrix\n");
     
     DistanceVector(router_list);
@@ -165,10 +167,11 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
             // Go through all possible destination
             for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
                 // Compare with neighbors on every possible connection
-                char changeRouter = '?';
-                changeRouter = tableCompare(list_input[i] , list_input[j]);
-                printf("Test: %c\n" , changeRouter);
-                if(changeRouter != '?') {
+                char changeRouter[DEFAULT_STR_SIZE] = "";
+                int condition = 0;
+                tableCompare(list_input[i] , list_input[j] , changeRouter);
+                printf("Test: %s\n" , changeRouter);
+                if(strcmp(changeRouter , "")) {
                     int dest_index_from_src = findLink(list_input[i] , changeRouter);
                     int neigh_index_from_src = findLink(list_input[i] , list_input[j].router_name);
                     int dest_index_from_neigh = findLink(list_input[j] , changeRouter);
@@ -191,9 +194,10 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
     } while (updateState);
 }
 
-char tableCompare(struct router list_1_input , struct router list_2_input) {
+void tableCompare(struct router list_1_input , struct router list_2_input , char* buffer_input) {
     int link_neigh_dest_index = -1;
     int link_src_neigh_index = -1;
+
 
     for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
         // Find the index of each link
@@ -205,10 +209,11 @@ char tableCompare(struct router list_1_input , struct router list_2_input) {
             (list_2_input.link_table[link_neigh_dest_index].distance_to_dest + 
             list_1_input.link_table[link_src_neigh_index].distance_to_dest)) {
 
+                strcpy(buffer_input , list_1_input.link_table[i].destination);
+                return;
             }
-            return list_1_input.router_name[0];
     }
-    return '?';
+    return;
 }
 
 
@@ -218,6 +223,7 @@ int findLink(struct router router_input , char name_input[DEFAULT_STR_SIZE]) {
             return i;
         }
     }
+    return -1;
 
 }
 
