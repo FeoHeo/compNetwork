@@ -1,16 +1,26 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "link_and_router.h"
 
 int DEBUG = 1;
 
+#define INF 999
 #define DEFAULT_NETWORK_SIZE 5
 
 void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]);
 
-/*Returns the first index where an empty element is detected in the provided linkTable[]*/
-int findLink(struct link *table_input);
+void printAll(struct router list_input[DEFAULT_NETWORK_SIZE]);
+
+
+// Returns the dest that need updating, caller need to calculate the value based on the value on the neighbor's table
+// If no value need to be updated then return blank ""
+char tableCompare(struct router router_1_input , struct router router_2_input);
+
+// Find the name_input from router_input inside router_input and return the index to that in link_table
+int findLink(struct router router_input , char name_input[DEFAULT_STR_SIZE]);
+
 
 int main(int agrc , char **argv) {
 
@@ -56,7 +66,7 @@ for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
         /*If found 2 different router then set cost to inf*/
         if(strcmp(router_list[i].router_name , router_list[j].router_name)) {
             strcpy(router_list[i].link_table[j].destination , router_list[j].router_name);
-            router_list[i].link_table[j].distance_to_dest = -1;       
+            router_list[i].link_table[j].distance_to_dest = INF;       
 
         } else {
             /*If found 2 router of same name then set cost to 0*/
@@ -68,24 +78,9 @@ for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
     }
 }
 
-/*Printing the link table of each router*/
+// Print table
 
-for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
-    if(!strcmp(router_list[i].router_name , "")) {
-        break;
-    }
-    printf("Router %s link table\n" , router_list[i].router_name);
-    printf("\n");
-
-    for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
-        if(!strcmp(router_list[i].link_table[j].destination , "")) {
-            continue;
-        }
-        printf("dest: %s\t hop: %s\t cost: %d\n" , 
-        router_list[i].link_table[j].destination , router_list[i].link_table[j].next_hop , 
-        router_list[i].link_table[j].distance_to_dest);
-    }
-}
+printAll(router_list);
 
 
 
@@ -141,7 +136,7 @@ do {
                     /*Update the cost and neighbor accordingly*/
                     strcpy(router_list[i].link_table[j].next_hop , tokenised);
                     tokenised = strtok(NULL , " ");
-                    router_list[i].link_table[j].distance_to_dest = (*tokenised)-'0';
+                    router_list[i].link_table[j].distance_to_dest = atoi(tokenised);
                 }
             }
 
@@ -160,23 +155,92 @@ do {
 }
 
 void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
-    // Go through all routers
+    
+    int updateState = 0;
+    
+    do {
+        updateState = 0;
+        // Go through all routers
+        for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+            // Go through all possible destination
+            for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
+                // Compare with neighbors on every possible connection
+                char changeRouter = '?';
+                changeRouter = tableCompare(list_input[i] , list_input[j]);
+                printf("Test: %c\n" , changeRouter);
+                if(changeRouter != '?') {
+                    int dest_index_from_src = findLink(list_input[i] , changeRouter);
+                    int neigh_index_from_src = findLink(list_input[i] , list_input[j].router_name);
+                    int dest_index_from_neigh = findLink(list_input[j] , changeRouter);
+                    
+                    // Update the cost to dest = to_neigh + neigh_to_dest
+                    list_input[i].link_table[dest_index_from_src].distance_to_dest = 
+                    list_input[i].link_table[neigh_index_from_src].distance_to_dest +
+                    list_input[j].link_table[dest_index_from_neigh].distance_to_dest;
+                    
+                    // Update next_hop in src
+                    strcpy(list_input[i].link_table[dest_index_from_src].next_hop , list_input[j].router_name);
+                    printf("Incoming Change for %s\n" , list_input[i].router_name);
+                    printAll(list_input);
+                    updateState = 1;
+                }
+                
+            }
+            
+        }
+    } while (updateState);
+}
+
+char tableCompare(struct router list_1_input , struct router list_2_input) {
+    int link_neigh_dest_index = -1;
+    int link_src_neigh_index = -1;
+
     for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
-        
+        // Find the index of each link
+        // link from src to dest is already i
+        link_src_neigh_index = findLink(list_1_input , list_2_input.router_name);
+        link_neigh_dest_index = findLink(list_2_input , list_1_input.link_table[i].destination);
+
+        if(list_1_input.link_table[i].distance_to_dest > 
+            (list_2_input.link_table[link_neigh_dest_index].distance_to_dest + 
+            list_1_input.link_table[link_src_neigh_index].distance_to_dest)) {
+
+            }
+            return list_1_input.router_name[0];
     }
+    return '?';
 }
 
 
-
-
-int findLink(struct link *table_input) {
-    int i;
-    for(i=0 ; i<DEFAULT_TABLE_SIZE ; i++) {
-        if(*table_input[i].destination == '\0') {
+int findLink(struct router router_input , char name_input[DEFAULT_STR_SIZE]) {
+    for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+        if(!strcmp(router_input.link_table[i].destination , name_input)) {
             return i;
         }
     }
 
-    printf("From findLink(): No empty indexes found\n");
-    return -1;
-};
+}
+
+void printAll(struct router list_input[DEFAULT_NETWORK_SIZE]) {
+    /*Printing the link table of each router*/
+
+    for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+        if(!strcmp(list_input[i].router_name , "")) {
+            break;
+        }
+        printf("Router %s link table\n" , list_input[i].router_name);
+        printf("\n");
+
+        for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
+            if(!strcmp(list_input[i].link_table[j].destination , "")) {
+                continue;
+            }
+            printf("dest: %s\t hop: %s\t cost: %d\n" , 
+            list_input[i].link_table[j].destination , list_input[i].link_table[j].next_hop , 
+            list_input[i].link_table[j].distance_to_dest);
+        }
+    }
+
+    return;
+}
+

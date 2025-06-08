@@ -45,3 +45,15 @@ for the corresponding router_list[] element
 - Currently, need to input all the remaining dest to a router as inf even if they are not neighbors
 + Might need to keep an array of string to input in as other dest later
 + But if this is the case, then links won't be added after START but only updated
+
+- So the DistanceVector would work like so 
++ go through all possible routers 
++ Each router will check for all possible connections 
++ Each router will then go through each enighbor to ask for the neighbor's link_table
++ If (router->dest < (router->neighbor + neighbor->dest)) then update router->dest cost and next_hop
++ If any update is done then restart the loop
++ Also if found any distance is -1 then it should be treated as infinity
+
+- Could make another function to find the neighbor and conenction since we don't append them in order
++ Will also assume that user only inputs single character as inputs because returning string from
+function is a lot of work
