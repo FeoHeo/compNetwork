@@ -165,8 +165,17 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
         // Go through all routers
         for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
             // Go through all possible destination
+            if(!strcmp(list_input[i].router_name , "")) {
+                continue;
+            }
             for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
                 // Compare with neighbors on every possible connection
+                if(!strcmp(list_input[j].router_name , "")) {
+                    continue;
+                }
+                if(i==j) {
+                    continue;
+                }
                 char changeRouter[DEFAULT_STR_SIZE] = "";
                 int condition = 0;
                 tableCompare(list_input[i] , list_input[j] , changeRouter);
@@ -198,21 +207,33 @@ void tableCompare(struct router list_1_input , struct router list_2_input , char
     int link_neigh_dest_index = -1;
     int link_src_neigh_index = -1;
 
+    if(strcmp(list_1_input.router_name , list_2_input.router_name) == 0) {
+        return;
+    }
+
 
     for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+        printf("Accessing router: %s\t - %s\n" , list_1_input.router_name , list_2_input.router_name);
         // Find the index of each link
         // link from src to dest is already i
         link_src_neigh_index = findLink(list_1_input , list_2_input.router_name);
         link_neigh_dest_index = findLink(list_2_input , list_1_input.link_table[i].destination);
 
-        if(list_1_input.link_table[i].distance_to_dest > 
+        printf("distance src-dest: %d\t neigh-dest: %d\t src-neigh: %d\n" , 
+            list_1_input.link_table[i].distance_to_dest ,
+            list_2_input.link_table[link_neigh_dest_index].distance_to_dest ,
+            list_1_input.link_table[link_src_neigh_index].distance_to_dest);
+
+        strcpy(buffer_input , list_1_input.link_table[i].destination);
+        if(list_1_input.link_table[i].distance_to_dest < 
             (list_2_input.link_table[link_neigh_dest_index].distance_to_dest + 
             list_1_input.link_table[link_src_neigh_index].distance_to_dest)) {
 
-                strcpy(buffer_input , list_1_input.link_table[i].destination);
                 return;
             }
     }
+
+    strcpy(buffer_input , "");
     return;
 }
 

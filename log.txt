@@ -1,0 +1,586 @@
+Enter router name: Name enetered: A
+Enter router name: Name enetered: B
+Enter router name: Router A link table
+
+dest: A	 hop: A	 cost: 0
+dest: B	 hop: 	 cost: 999
+Router B link table
+
+dest: A	 hop: 	 cost: 999
+dest: B	 hop: B	 cost: 0
+Enter router links: 
+Enter router links: 
+Router A link table
+
+dest: A	 hop: A	 cost: 0
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: 	 cost: 999
+dest: B	 hop: B	 cost: 0
+Calculating Distance matrix
+Accessing router: A	 - B
+distance src-dest: 0	 neigh-dest: 999	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 1002
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: 	 cost: 999
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 999	 neigh-dest: 1002	 src-neigh: 999
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 1002
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2001
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 1002	 neigh-dest: 2001	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 2004
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2001
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 2001	 neigh-dest: 2004	 src-neigh: 2001
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 2004
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 4005
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 2004	 neigh-dest: 4005	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 4008
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 4005
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 4005	 neigh-dest: 4008	 src-neigh: 4005
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 4008
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 8013
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 4008	 neigh-dest: 8013	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 8016
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 8013
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 8013	 neigh-dest: 8016	 src-neigh: 8013
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 8016
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 16029
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 8016	 neigh-dest: 16029	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 16032
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 16029
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 16029	 neigh-dest: 16032	 src-neigh: 16029
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 16032
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 32061
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 16032	 neigh-dest: 32061	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 32064
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 32061
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 32061	 neigh-dest: 32064	 src-neigh: 32061
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 32064
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 64125
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 32064	 neigh-dest: 64125	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 64128
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 64125
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 64125	 neigh-dest: 64128	 src-neigh: 64125
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 64128
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 128253
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 64128	 neigh-dest: 128253	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 128256
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 128253
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 128253	 neigh-dest: 128256	 src-neigh: 128253
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 128256
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 256509
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 128256	 neigh-dest: 256509	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 256512
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 256509
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 256509	 neigh-dest: 256512	 src-neigh: 256509
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 256512
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 513021
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 256512	 neigh-dest: 513021	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 513024
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 513021
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 513021	 neigh-dest: 513024	 src-neigh: 513021
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 513024
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 1026045
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 513024	 neigh-dest: 1026045	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 1026048
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 1026045
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 1026045	 neigh-dest: 1026048	 src-neigh: 1026045
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 1026048
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2052093
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 1026048	 neigh-dest: 2052093	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 2052096
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2052093
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 2052093	 neigh-dest: 2052096	 src-neigh: 2052093
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 2052096
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 4104189
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 2052096	 neigh-dest: 4104189	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 4104192
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 4104189
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 4104189	 neigh-dest: 4104192	 src-neigh: 4104189
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 4104192
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 8208381
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 4104192	 neigh-dest: 8208381	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 8208384
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 8208381
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 8208381	 neigh-dest: 8208384	 src-neigh: 8208381
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 8208384
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 16416765
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 8208384	 neigh-dest: 16416765	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 16416768
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 16416765
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 16416765	 neigh-dest: 16416768	 src-neigh: 16416765
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 16416768
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 32833533
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 16416768	 neigh-dest: 32833533	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 32833536
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 32833533
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 32833533	 neigh-dest: 32833536	 src-neigh: 32833533
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 32833536
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 65667069
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 32833536	 neigh-dest: 65667069	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 65667072
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 65667069
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 65667069	 neigh-dest: 65667072	 src-neigh: 65667069
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 65667072
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 131334141
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 65667072	 neigh-dest: 131334141	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 131334144
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 131334141
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 131334141	 neigh-dest: 131334144	 src-neigh: 131334141
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 131334144
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 262668285
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 131334144	 neigh-dest: 262668285	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 262668288
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 262668285
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 262668285	 neigh-dest: 262668288	 src-neigh: 262668285
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 262668288
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 525336573
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 262668288	 neigh-dest: 525336573	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 525336576
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 525336573
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 525336573	 neigh-dest: 525336576	 src-neigh: 525336573
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 525336576
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 1050673149
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 525336576	 neigh-dest: 1050673149	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 1050673152
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 1050673149
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 1050673149	 neigh-dest: 1050673152	 src-neigh: 1050673149
+Test: A
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 1050673152
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2101346301
+dest: B	 hop: B	 cost: 0
+Accessing router: A	 - B
+distance src-dest: 1050673152	 neigh-dest: 2101346301	 src-neigh: 3
+Test: A
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 2101346304
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2101346301
+dest: B	 hop: B	 cost: 0
+Accessing router: B	 - A
+distance src-dest: 2101346301	 neigh-dest: 2101346304	 src-neigh: 2101346301
+Accessing router: B	 - A
+distance src-dest: 0	 neigh-dest: 3	 src-neigh: 2101346301
+Test: B
+Incoming Change for B
+Router A link table
+
+dest: A	 hop: B	 cost: 2101346304
+dest: B	 hop: B	 cost: 3
+Router B link table
+
+dest: A	 hop: A	 cost: 2101346301
+dest: B	 hop: A	 cost: 2101346304
+Accessing router: A	 - B
+distance src-dest: 2101346304	 neigh-dest: 2101346301	 src-neigh: 3
+Accessing router: A	 - B
+distance src-dest: 3	 neigh-dest: 2101346304	 src-neigh: 3
+Test: B
+Incoming Change for A
+Router A link table
+
+dest: A	 hop: B	 cost: 2101346304
+dest: B	 hop: B	 cost: 2101346307
+Router B link table
+
+dest: A	 hop: A	 cost: 2101346301
+dest: B	 hop: A	 cost: 2101346304
+Accessing router: B	 - A
+distance src-dest: 2101346301	 neigh-dest: 2101346304	 src-neigh: 2101346301
+Accessing router: B	 - A
+distance src-dest: 2101346304	 neigh-dest: 2101346307	 src-neigh: 2101346301
+Accessing router: B	 - A
+distance src-dest: 999	 neigh-dest: 999	 src-neigh: 2101346301
+Test: 
+Accessing router: A	 - B
+distance src-dest: 2101346304	 neigh-dest: 2101346301	 src-neigh: 2101346307
+Accessing router: A	 - B
+distance src-dest: 2101346307	 neigh-dest: 2101346304	 src-neigh: 2101346307
+Accessing router: A	 - B
+distance src-dest: 999	 neigh-dest: 999	 src-neigh: 2101346307
+Test: 
+Accessing router: B	 - A
+distance src-dest: 2101346301	 neigh-dest: 2101346304	 src-neigh: 2101346301
+Accessing router: B	 - A
+distance src-dest: 2101346304	 neigh-dest: 2101346307	 src-neigh: 2101346301
+Accessing router: B	 - A
+distance src-dest: 999	 neigh-dest: 999	 src-neigh: 2101346301
+Test: 
