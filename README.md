@@ -1,8 +1,13 @@
 # compNetwork
 
+To run the makefile:
 
+> make
 
-For Computer Networking course
-https://github.com/WukoSiric/Distance-Vector-Networking
+To run the program:
 
-For referencing
+> ./network
+
+Clean up the program:
+
+> make clean
