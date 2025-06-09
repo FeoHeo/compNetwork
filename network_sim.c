@@ -82,10 +82,14 @@ for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
 
 printAll(router_list);
 
-
+// These will be used to reassign links later
+char src_input[DEFAULT_NETWORK_SIZE][DEFAULT_STR_SIZE];
+char neigh_input[DEFAULT_NETWORK_SIZE][DEFAULT_STR_SIZE];
+int cost_input[DEFAULT_NETWORK_SIZE];
 
 /*Process inputs for links*/
 do {
+    int empty_index = 0;
     int i;
     printf("Enter router links: \n");
     fgets(user_input , DEFAULT_STR_SIZE , stdin);
@@ -124,25 +128,37 @@ do {
         }
     }
     
-    
+    // Used to store the inputs and input them to the other neighbor
+    char inverted_input_str[2][DEFAULT_STR_SIZE];
+    int inverted_input_cost;
     /*Find source input*/
     for(i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
         if(!strcmp(router_list[i].router_name , tokenised)) {
-
+            strcpy(inverted_input_str[1] , tokenised);
             /*Find dest input*/
             tokenised = strtok(NULL , " ");
             for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
                 if(!strcmp(router_list[i].link_table[j].destination , tokenised)) {
                     /*Update the cost and neighbor accordingly*/
                     strcpy(router_list[i].link_table[j].next_hop , tokenised);
+                    strcpy(inverted_input_str[0] , tokenised);
                     tokenised = strtok(NULL , " ");
                     router_list[i].link_table[j].distance_to_dest = atoi(tokenised);
+                    inverted_input_cost = atoi(tokenised);
+                    
                 }
             }
 
         }
     }
-    
+
+    for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+        if(!strcmp(router_list[i].router_name , inverted_input_str[0])) {
+            int temp_index = findLink(router_list[i] , inverted_input_str[1]);
+            strcpy(router_list[i].link_table[temp_index].next_hop , inverted_input_str[1]);
+            router_list[i].link_table[temp_index].distance_to_dest = inverted_input_cost;
+        }
+    }
     
 } while(strcmp(user_input , "END"));
 
@@ -201,6 +217,10 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
             
         }
     } while (updateState);
+
+
+    printf("Final print \n \n");
+    printAll(list_input);
 }
 
 void tableCompare(struct router list_1_input , struct router list_2_input , char* buffer_input) {
@@ -216,6 +236,7 @@ void tableCompare(struct router list_1_input , struct router list_2_input , char
         printf("Accessing router: %s\t - %s\n" , list_1_input.router_name , list_2_input.router_name);
         // Find the index of each link
         // link from src to dest is already i
+        printf("Looking for: %s inside %s\n" , list_2_input.router_name , list_1_input.router_name);
         link_src_neigh_index = findLink(list_1_input , list_2_input.router_name);
         link_neigh_dest_index = findLink(list_2_input , list_1_input.link_table[i].destination);
 
@@ -225,12 +246,16 @@ void tableCompare(struct router list_1_input , struct router list_2_input , char
             list_1_input.link_table[link_src_neigh_index].distance_to_dest);
 
         strcpy(buffer_input , list_1_input.link_table[i].destination);
-        if(list_1_input.link_table[i].distance_to_dest < 
-            (list_2_input.link_table[link_neigh_dest_index].distance_to_dest + 
-            list_1_input.link_table[link_src_neigh_index].distance_to_dest)) {
+        int src_to_dest = list_1_input.link_table[i].distance_to_dest;
+        int neigh_to_dest = list_2_input.link_table[link_neigh_dest_index].distance_to_dest;
+        int src_to_neigh = list_1_input.link_table[link_src_neigh_index].distance_to_dest;
+        
+        if(src_to_dest > ( neigh_to_dest + src_to_neigh )) {
 
-                return;
-            }
+            strcpy(buffer_input , list_1_input.link_table[i].destination);
+            return;
+
+        }
     }
 
     strcpy(buffer_input , "");
