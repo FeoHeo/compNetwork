@@ -13,6 +13,8 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]);
 
 void printAll(struct router list_input[DEFAULT_NETWORK_SIZE]);
 
+void printAll_Cyclic(struct router list_input[DEFAULT_NETWORK_SIZE] , int cycle_input);
+
 
 // Returns the dest that need updating, caller need to calculate the value based on the value on the neighbor's table
 // If no value need to be updated then return blank ""
@@ -162,9 +164,11 @@ do {
     
 } while(strcmp(user_input , "END"));
 
+    printf("\n<Initial Tables>\n");
+
     printAll(router_list);
 
-    printf("Calculating Distance matrix\n");
+    printf("\n<Calculating Distance matrix>\n");
     
     DistanceVector(router_list);
     
@@ -175,6 +179,7 @@ do {
 void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
     
     int updateState = 0;
+    int cycle_count = 0;
     
     do {
         updateState = 0;
@@ -195,7 +200,7 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
                 char changeRouter[DEFAULT_STR_SIZE] = "";
                 int condition = 0;
                 tableCompare(list_input[i] , list_input[j] , changeRouter);
-                printf("Test: %s\n" , changeRouter);
+                // printf("Test: %s\n" , changeRouter);
                 if(strcmp(changeRouter , "")) {
                     int dest_index_from_src = findLink(list_input[i] , changeRouter);
                     int neigh_index_from_src = findLink(list_input[i] , list_input[j].router_name);
@@ -208,18 +213,21 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
                     
                     // Update next_hop in src
                     strcpy(list_input[i].link_table[dest_index_from_src].next_hop , list_input[j].router_name);
-                    printf("Incoming Change for %s\n" , list_input[i].router_name);
-                    printAll(list_input);
+                    // printf("Incoming Change for %s\n" , list_input[i].router_name);
+                    // printAll(list_input);
                     updateState = 1;
                 }
                 
             }
             
         }
+        printAll_Cyclic(list_input , cycle_count);
+        cycle_count++;
+
     } while (updateState);
 
 
-    printf("Final print \n \n");
+    printf("\n<Final print>\n");
     printAll(list_input);
 }
 
@@ -233,17 +241,17 @@ void tableCompare(struct router list_1_input , struct router list_2_input , char
 
 
     for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
-        printf("Accessing router: %s\t - %s\n" , list_1_input.router_name , list_2_input.router_name);
+        // printf("Accessing router: %s\t - %s\n" , list_1_input.router_name , list_2_input.router_name);
         // Find the index of each link
         // link from src to dest is already i
-        printf("Looking for: %s inside %s\n" , list_2_input.router_name , list_1_input.router_name);
+        // printf("Looking for: %s inside %s\n" , list_2_input.router_name , list_1_input.router_name);
         link_src_neigh_index = findLink(list_1_input , list_2_input.router_name);
         link_neigh_dest_index = findLink(list_2_input , list_1_input.link_table[i].destination);
 
-        printf("distance src-dest: %d\t neigh-dest: %d\t src-neigh: %d\n" , 
-            list_1_input.link_table[i].distance_to_dest ,
-            list_2_input.link_table[link_neigh_dest_index].distance_to_dest ,
-            list_1_input.link_table[link_src_neigh_index].distance_to_dest);
+        // printf("distance src-dest: %d\t neigh-dest: %d\t src-neigh: %d\n" , 
+        //     list_1_input.link_table[i].distance_to_dest ,
+        //     list_2_input.link_table[link_neigh_dest_index].distance_to_dest ,
+        //     list_1_input.link_table[link_src_neigh_index].distance_to_dest);
 
         strcpy(buffer_input , list_1_input.link_table[i].destination);
         int src_to_dest = list_1_input.link_table[i].distance_to_dest;
@@ -278,10 +286,14 @@ void printAll(struct router list_input[DEFAULT_NETWORK_SIZE]) {
 
     for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
         if(!strcmp(list_input[i].router_name , "")) {
+            printf("==========\n");
             break;
         }
-        printf("Router %s link table\n" , list_input[i].router_name);
-        printf("\n");
+        if(i ==0) {
+            printf("==========\n");
+        }
+        printf("Router %s link table\n\n" , list_input[i].router_name);
+        // printf("\n");
 
         for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
             if(!strcmp(list_input[i].link_table[j].destination , "")) {
@@ -295,4 +307,31 @@ void printAll(struct router list_input[DEFAULT_NETWORK_SIZE]) {
 
     return;
 }
+
+void printAll_Cyclic(struct router list_input[DEFAULT_NETWORK_SIZE] , int cycle_input) {
+    /*Printing the link table of each router*/
+
+    for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
+        if(!strcmp(list_input[i].router_name , "")) {
+            printf("==========\n");
+            break;
+        }
+        if(i ==0) {
+            printf("==========\n");
+        }
+        printf("Router %s link table t=%d\n\n" , list_input[i].router_name , cycle_input);
+
+        for(int j=0 ; j<DEFAULT_NETWORK_SIZE ; j++) {
+            if(!strcmp(list_input[i].link_table[j].destination , "")) {
+                continue;
+            }
+            printf("dest: %s\t hop: %s\t cost: %d\n" , 
+            list_input[i].link_table[j].destination , list_input[i].link_table[j].next_hop , 
+            list_input[i].link_table[j].distance_to_dest);
+        }
+    }
+
+    return;
+}
+
 
