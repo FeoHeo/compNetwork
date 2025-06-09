@@ -6,7 +6,7 @@ To run the makefile:
 
 To run the program:
 
-> ./network
+> ./DistanceVector
 
 Clean up the program:
 
