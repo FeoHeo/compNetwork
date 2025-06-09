@@ -180,9 +180,12 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
     
     int updateState = 0;
     int cycle_count = 0;
+
+    printAll_Cyclic(list_input , cycle_count);
     
     do {
         updateState = 0;
+        cycle_count++;
         // Go through all routers
         for(int i=0 ; i<DEFAULT_NETWORK_SIZE ; i++) {
             // Go through all possible destination
@@ -222,7 +225,6 @@ void DistanceVector(struct router list_input[DEFAULT_NETWORK_SIZE]) {
             
         }
         printAll_Cyclic(list_input , cycle_count);
-        cycle_count++;
 
     } while (updateState);
 
